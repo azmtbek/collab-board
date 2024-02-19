@@ -1,19 +1,16 @@
 // "use client";
-// import { Excalidraw, Excalidraw.convertToExcalidrawElements } from "@excalidraw/excalidraw";
+// import { Excalidraw, convertToExcalidrawElements } from "@excalidraw/excalidraw";
 
 // import "@excalidraw/excalidraw/index.css";
+// import { ExcalidrawProps } from "@excalidraw/excalidraw/types/types";
+// import { forwardRef } from "react";
 
-// const ExcalidrawWrapper: React.FC = () => {
-//   console.info(convertToExcalidrawElements([{
-//     type: "rectangle",
-//     id: "rect-1",
-//     width: 186.47265625,
-//     height: 141.9765625,
-//   },]));
+// const ExcalidrawWrapper: React.FC = forwardRef((props: ExcalidrawProps, ref) => {
+
 //   return (
-//     <div style={{height:"500px", width:"500px"}}  
-//       <Excalidraw />
-//     </div > 
+//     <div style={{ height: "500px", width: "500px" }} >
+//       <Excalidraw  {...props} />
+//     </div >
 //   );
-// };
+// });
 // export default ExcalidrawWrapper;
