@@ -1,52 +1,62 @@
 'use client';
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { Excalidraw } from "@excalidraw/excalidraw";
+import { Excalidraw, LiveCollaborationTrigger } from "@excalidraw/excalidraw";
 import { AppState, ExcalidrawImperativeAPI, ExcalidrawProps } from '@excalidraw/excalidraw/types/types';
-import { Button } from '@/components/ui/button';
-import { ExcalidrawElement } from '@excalidraw/excalidraw/types/element/types';
+import { ExcalidrawElement, Theme } from '@excalidraw/excalidraw/types/element/types';
 import _ from 'lodash';
-import dynamic from "next/dynamic";
-// import { throttleRAF } from '@excalidraw/excalidraw/types/utils';
+import useLocalStorageState from 'use-local-storage-state';
 
 
-// const ExcalidrawWrapper = dynamic(
-//   async () => (await import("../../excalidrawWrapper")).default,
-//   {
-//     ssr: false,
-//   },
-// );
+
 
 export default function Board() {
-  // const history = useHistory();
   const [excalidrawAPI, setExcalidrawAPI] = useState<ExcalidrawImperativeAPI>();
-  const [lastElId, setLastElId] = useState('');
-  ;
-  // useEffect(() => {
-  //   // const el = excalidrawAPI?.getSceneElements();
-  //   excalidrawAPI?.onChange((elements) => );
-  //   // console.log(el);
-  // }, [excalidrawAPI, update]);
-  // const log = (element) => console.log('throttle', element), 800);
+  // const [lastElId, setLastElId] = useState('');
+  const [theme, setTheme] = useLocalStorageState('theme');
+  const [elements, setElements] = useLocalStorageState<readonly ExcalidrawElement[]>(
+    'elements', { defaultValue: [] }
+  )
+    ;
+
   const onChange: ExcalidrawProps["onChange"] = useCallback(
-    _.throttle((elements: readonly ExcalidrawElement[], appState: AppState) => {
-      const last = elements.at(-1);
-      if (lastElId !== last?.id) {
-        setLastElId(last?.id!);
-        console.log(elements);
+    _.throttle((els: readonly ExcalidrawElement[], appState: AppState) => {
+      // const last = els.at(-1);
+      // const isNewAdded = false;
+      for (const el of els) {
+        if (el.updated !== elements.find(e => e.id == el.id)?.updated) setElements(els);
       }
-      console.log('other', elements);
+      // if (lastElId !== last?.id) {
+      //   setLastElId(last?.id!);
+      //   setElements(prev => els);
+      //   console.log(elements);
+      // }
+      if (appState.theme !== theme) {
+        setTheme(appState.theme);
+      }
+      console.log('other', els);
     }, 2000),
-    [lastElId],
+    [],
   );
 
   return (
     <div className="h-screen">
-      {/* <Button onClick={() => setUpdate(prev => prev + 1)} className='absolute top-0 right-32 z-20'>update</Button> */}
-      <Excalidraw excalidrawAPI={(api) => {
-        setExcalidrawAPI(api);
-      }} onChange={onChange}
-        isCollaborating={true} />
+      <Excalidraw
+        initialData={{
+          elements,
+          appState: { theme: theme as Theme }
+        }}
+
+        excalidrawAPI={(api) => {
+          setExcalidrawAPI(api);
+        }}
+        onChange={onChange}
+        isCollaborating={true}
+        renderTopRightUI={() => (
+          <LiveCollaborationTrigger isCollaborating={true} onSelect={() => { console.log('log here'); excalidrawAPI; }} />)}
+      >
+      </Excalidraw>
+
     </div>
   );
 }
