@@ -10,7 +10,7 @@ import useLocalStorageState from 'use-local-storage-state';
 
 
 
-export default function Board() {
+export default function Board({ data }: { data: string; }) {
   const [excalidrawAPI, setExcalidrawAPI] = useState<ExcalidrawImperativeAPI>();
   // const [lastElId, setLastElId] = useState('');
   const [theme, setTheme] = useLocalStorageState('theme');

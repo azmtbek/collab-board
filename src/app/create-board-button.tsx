@@ -1,9 +1,24 @@
+// 'use server';
 import { Button } from '@/components/ui/button';
 import { PlusIcon } from '@radix-ui/react-icons';
+import { kv } from '@vercel/kv';
+import { nanoid } from 'nanoid';
+import { redirect } from 'next/navigation';
 import React from 'react';
+import CreateBoardDialog from './create-board-dialog';
 
-export default function CreateBoard() {
+const createBoard = async (name: string) => {
+  'use server';
+  const id = nanoid(13);
+  const boards = await kv.lpush<string>('boards', `${id}:${name}`);
+  console.log(boards);
+  redirect(`board/${id}`);
+};
+
+export default async function CreateBoard() {
+
+
   return (
-    <Button className='text-md'><PlusIcon />create board</Button>
+    <CreateBoardDialog createBoard={createBoard} />
   );
 }
