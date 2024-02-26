@@ -6,36 +6,47 @@ import { AppState, ExcalidrawImperativeAPI, ExcalidrawProps } from '@excalidraw/
 import { ExcalidrawElement, Theme } from '@excalidraw/excalidraw/types/element/types';
 import _ from 'lodash';
 import useLocalStorageState from 'use-local-storage-state';
+import { useDataStore } from '@/lib/useDataStore';
+import useStore from '@/lib/useStore';
+import { setBoardElement } from './actions';
+import { Elements, RowElements, parseElements, stringifyElements } from './utils';
+import { revalidatePath } from 'next/cache';
 
 
-
-
-export default function Board({ data }: { data: string; }) {
+export default function Board(
+  { elements: defaultElements, boardId }
+    : {
+      elements: RowElements;
+      boardId: string;
+    }
+) {
   const [excalidrawAPI, setExcalidrawAPI] = useState<ExcalidrawImperativeAPI>();
-  // const [lastElId, setLastElId] = useState('');
   const [theme, setTheme] = useLocalStorageState('theme');
-  const [elements, setElements] = useLocalStorageState<readonly ExcalidrawElement[]>(
-    'elements', { defaultValue: [] }
-  )
-    ;
+  const [locStorageElements, setLocStorageElements] = useLocalStorageState<Elements>(
+    `elements:${boardId}`, { defaultValue: parseElements(defaultElements) }
+  );
 
   const onChange: ExcalidrawProps["onChange"] = useCallback(
-    _.throttle((els: readonly ExcalidrawElement[], appState: AppState) => {
-      // const last = els.at(-1);
-      // const isNewAdded = false;
+    async (els: readonly ExcalidrawElement[], appState: AppState) => {
+      const elementsToUpdate: Elements = {};
       for (const el of els) {
-        if (el.updated !== elements.find(e => e.id == el.id)?.updated) setElements(els);
+        let localEl = locStorageElements[el.id];
+
+        console.log('idx', localEl?.id);
+        console.log('updated:el', el.updated);
+        if (!localEl || el.updated !== localEl.updated) {
+          elementsToUpdate[el.id] = el;
+        }
       }
-      // if (lastElId !== last?.id) {
-      //   setLastElId(last?.id!);
-      //   setElements(prev => els);
-      //   console.log(elements);
-      // }
+      if (!_.isEmpty(elementsToUpdate)) {
+        const index = await setBoardElement(boardId, stringifyElements(elementsToUpdate));
+        setLocStorageElements((prev) => ({ ...prev, ...elementsToUpdate }));
+      }
       if (appState.theme !== theme) {
         setTheme(appState.theme);
       }
-      console.log('other', els);
-    }, 2000),
+
+    },
     [],
   );
 
@@ -43,7 +54,7 @@ export default function Board({ data }: { data: string; }) {
     <div className="h-screen">
       <Excalidraw
         initialData={{
-          elements,
+          elements: Object.values(locStorageElements),
           appState: { theme: theme as Theme }
         }}
 
@@ -53,10 +64,12 @@ export default function Board({ data }: { data: string; }) {
         onChange={onChange}
         isCollaborating={true}
         renderTopRightUI={() => (
-          <LiveCollaborationTrigger isCollaborating={true} onSelect={() => { console.log('log here'); excalidrawAPI; }} />)}
+          <LiveCollaborationTrigger
+            isCollaborating={true}
+            onSelect={() => { console.log('log here'); excalidrawAPI; }}
+          />)}
       >
       </Excalidraw>
-
     </div>
   );
 }

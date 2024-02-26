@@ -25,6 +25,7 @@ interface Props {
 
 export default function CreateBoardDialog({ createBoard }: Props) {
   const [name, setName] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   // const router = useRouter();
   const [nickname, setNickname] = useLocalStorageState('nickname', { defaultValue: 'doe' });
 
@@ -34,7 +35,7 @@ export default function CreateBoardDialog({ createBoard }: Props) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button ><PlusIcon />create board</Button>
+        <Button className="w-64 text-lg py-4 gap-1" ><PlusIcon /> create new board</Button>
         {/* <Button variant="outline">Edit Profile</Button> */}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
@@ -59,7 +60,14 @@ export default function CreateBoardDialog({ createBoard }: Props) {
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit" onClick={async () => { await createBoard(name); }}>Save changes</Button>
+          <Button type="submit" onClick={async (e) => {
+            e.preventDefault();
+            try {
+              await createBoard(name);
+            } catch (e) {
+              console.log(e);
+            }
+          }}>Save changes</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

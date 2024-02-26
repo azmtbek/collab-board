@@ -1,6 +1,4 @@
-// 'use server';
-import { Button } from '@/components/ui/button';
-import { PlusIcon } from '@radix-ui/react-icons';
+
 import { kv } from '@vercel/kv';
 import { nanoid } from 'nanoid';
 import { redirect } from 'next/navigation';
@@ -16,7 +14,6 @@ const createBoard = async (name: string) => {
 };
 
 export default async function CreateBoard() {
-
 
   return (
     <CreateBoardDialog createBoard={createBoard} />
