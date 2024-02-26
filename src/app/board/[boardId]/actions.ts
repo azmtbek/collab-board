@@ -12,10 +12,11 @@ export const getBoardElements = async (boardId: string) => {
   try {
     const els = await kv.hgetall(`board:${boardId}`);
     revalidatePath(`board/${boardId}`);
-    return (els || {}) as RowElements;
+    return els as RowElements;
   } catch (e) {
     console.log(e);
   }
+  return {};
 };
 
 

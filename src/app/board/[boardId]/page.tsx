@@ -1,6 +1,7 @@
 // 'use server';
 import dynamic from "next/dynamic";
 import { getBoardElements } from "./actions";
+import QueryPorvider from "./query-provider";
 
 // Since client components get prerenderd on server as well hence importing 
 // the excalidraw stuff dynamically with ssr false
@@ -16,8 +17,10 @@ const ExcalidrawWrapper = dynamic(
 
 export default async function Page({ params }: { params: { boardId: string; }; }) {
   if (!params.boardId) return <div>Loading...</div>;
-  const els = await getBoardElements(params.boardId) || {};
+
   return (
-    <ExcalidrawWrapper elements={els} boardId={params.boardId} />
+    <QueryPorvider>
+      <ExcalidrawWrapper boardId={params.boardId} />
+    </QueryPorvider>
   );
 }
