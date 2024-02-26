@@ -13,6 +13,9 @@ import { getBoardElements, setBoardElement } from './actions';
 // import { Elements, RowElements, parseElements, stringifyElements } from './utils';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getSceneVersion } from "@excalidraw/excalidraw";
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { HomeIcon } from '@radix-ui/react-icons';
 
 // import type { ExcalidrawElement } from "@excalidraw/excalidraw/types/element/types";
 
@@ -121,10 +124,16 @@ export default function Board(
         }}
         isCollaborating={true}
         renderTopRightUI={() => (
-          <LiveCollaborationTrigger
-            isCollaborating={true}
-            onSelect={() => { }}
-          />)}
+          <>
+
+            <Link href={'/'}>
+              <Button className='gap-1 text-center'><HomeIcon /> Home </Button>
+            </Link>
+            <LiveCollaborationTrigger
+              isCollaborating={true}
+              onSelect={() => { }}
+            />
+          </>)}
       >
       </Excalidraw>
     </div>
