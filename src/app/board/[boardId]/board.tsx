@@ -55,7 +55,7 @@ export default function Board(
   const queryClient = useQueryClient();
 
   const query = useQuery({
-    queryKey: ['elements'],
+    queryKey: ['elements', boardId],
     queryFn: async () => {
       const els = await getBoardElements(boardId);
       return els;
@@ -105,7 +105,7 @@ export default function Board(
 
     }, 1000));
 
-  }, [excalidrawAPI]);
+  }, [excalidrawAPI, setTheme, theme]);
 
   if (query.isLoading) return;
   return (
