@@ -28,7 +28,6 @@ export const parseElements = (els: RowElements) => {
   for (const el in els) {
     elements[el] = JSON.parse(els[el]);
   }
-  console.log('elements parsr', elements);
   return elements;
 };
 
@@ -59,13 +58,7 @@ export default function Board(
     queryKey: ['elements'],
     queryFn: async () => {
       const els = await getBoardElements(boardId);
-      console.log('theels2', els);
-      // setLocEls(parseElements(els));
-
-      // console.log('elements parsr', elements);
       return els;
-      // console.log('parse', await parseElements( els));
-      // return elements;
     }
   });
 
@@ -85,26 +78,27 @@ export default function Board(
   const [version, setVersion] = useState();
   useEffect(() => {
     excalidrawAPI?.onChange(_.throttle(async (els: readonly ExcalidrawElement[], appState: AppState) => {
+      //TODO: there is a bug that is holding to update state and returning it
+
       const ver = getSceneVersion(els);
       console.log(ver);
 
-      if (version === ver) return;
-      setVersion(version);
+      // if (version === ver) return;
+      // setVersion(version);
 
-      const elementsToUpdate: Elements = {};
-      els.forEach((el) => {
-        let localEl = query.data?.[el.id];
+      // const elementsToUpdate: Elements = {};
+      // els.forEach((el) => {
+      //   let localEl = query.data?.[el.id];
 
-        console.log('idx', localEl?.id);
-        console.log('updated:el', el.updated);
-        if (!localEl || el.updated !== localEl.updated) {
-          elementsToUpdate[el.id] = el;
-        }
-      });
-      if (!_.isEmpty(elementsToUpdate)) {
-        mutation.mutate(elementsToUpdate);
-        // setLocStorageElements((prev) => ({ ...prev, ...elementsToUpdate }));
-      }
+      //   console.log('idx', localEl?.id);
+      //   console.log('updated:el', el.updated);
+      //   if (!localEl || el.updated !== localEl.updated) {
+      //     elementsToUpdate[el.id] = el;
+      //   }
+      // });
+      // if (!_.isEmpty(elementsToUpdate)) {
+      //   mutation.mutate(elementsToUpdate);
+      // }
       if (appState.theme !== theme) {
         setTheme(appState.theme);
       }
@@ -114,9 +108,6 @@ export default function Board(
   }, [excalidrawAPI]);
 
   if (query.isLoading) return;
-
-  console.log('the data', query.data);
-
   return (
     <div className="h-screen">
       <Excalidraw

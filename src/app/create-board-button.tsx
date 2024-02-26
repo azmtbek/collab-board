@@ -9,7 +9,6 @@ const createBoard = async (name: string) => {
   'use server';
   const id = nanoid(13);
   const boards = await kv.lpush<string>('boards', `${id}:${name}`);
-  console.log(boards);
   redirect(`board/${id}`);
 };
 

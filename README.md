@@ -1,4 +1,3 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
 
@@ -14,23 +13,21 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## requirements
+- [x] enter nick-name.
+- [x] user can create board or join existing boards.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- [ ] Several users can draw on the same board simultaneously.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- [ ] Everything drawn on the board is stored "forever"
 
-## Learn More
+- [ ] Drawing area should fill the whole window (except, probably, the tool panel) and scale/scroll adequately.
 
-To learn more about Next.js, take a look at the following resources:
+- Optional requirement:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [x] Ability to erase previously draw elements.
+- [x] Several tools ("text", "rectangle", "circle", etc.) with colors.
+- [ ] Preview thumbnail images in the board list.
+- [x] Export to jpeg option.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- [ ] The most important part is how accurate will your app looks — does it look like a ready-to-market solution or like a student-practice?

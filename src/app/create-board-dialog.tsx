@@ -40,9 +40,9 @@ export default function CreateBoardDialog({ createBoard }: Props) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
+          <DialogTitle>Create a board</DialogTitle>
           <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
+            Please name your board. Choose a nickname for yourself to enter.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">

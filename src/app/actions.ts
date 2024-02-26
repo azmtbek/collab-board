@@ -12,8 +12,6 @@ interface Board {
 export async function getBoards() {
   try {
     const boards = await kv.lrange(`boards`, 0, -1);
-    console.log('boards', boards);
-    console.log('len', -1);
     revalidatePath('/');
     return boards;
   } catch (error) {

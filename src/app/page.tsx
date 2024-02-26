@@ -1,13 +1,6 @@
 import CreateBoard from "./create-board-button";
 import Boards from "./boards";
 
-import dynamic from "next/dynamic";
-
-// Since client components get prerenderd on server as well hence importing 
-// the excalidraw stuff dynamically with ssr false
-
-
-
 export default function Home() {
   return (
     <div className="flex flex-col items-center pt-20 h-screen gap-3">
