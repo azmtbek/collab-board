@@ -3,12 +3,12 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import React, { ReactNode } from 'react';
 
-const queryClient = new QueryClient();
 
 
 export default function QueryPorvider({ children }: { children: ReactNode; }) {
+  const [client] = React.useState(new QueryClient());
   return (
-    <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={client}>
       {children}
       <ReactQueryDevtools initialIsOpen />
     </QueryClientProvider>

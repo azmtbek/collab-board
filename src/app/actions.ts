@@ -1,3 +1,4 @@
+'use server';
 import { revalidatePath } from "next/cache";
 import { kv } from "@vercel/kv";
 
@@ -10,6 +11,7 @@ interface Board {
 
 
 export async function getBoards() {
+  'use server';
   try {
     const boards = await kv.lrange(`boards`, 0, -1);
     revalidatePath('/');
@@ -17,6 +19,7 @@ export async function getBoards() {
   } catch (error) {
     console.log(error);
   }
+  return [];
 }
 
 export async function deleteBoard(boarId: string) {
